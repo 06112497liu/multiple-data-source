@@ -10,10 +10,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-import org.springframework.util.CollectionUtils;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -30,24 +27,20 @@ public class MultipleAspect {
     }
 
     @Around("pointCut(transactional)")
-    public Object arround(ProceedingJoinPoint joinPoint, MultipleTransactional transactional) {
+    public Object arround(ProceedingJoinPoint joinPoint, MultipleTransactional transactional) throws Throwable {
 
-        Map<DataSourceTransactionManager, TransactionStatus> map = new HashMap<>();
         Stack<DataSourceTransactionManager> managerStack = new Stack<>();
         Stack<TransactionStatus> statusStack = new Stack<>();
         // 开启事务
         this.openTransaction(transactional, managerStack, statusStack);
-        Object obj = null;
         try {
-            obj = joinPoint.proceed();
+            Object obj = joinPoint.proceed();
             this.commitTransaction(managerStack, statusStack);
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
+            return obj;
+        } catch (Throwable e) {
             this.rollBack(managerStack, statusStack);
+            throw e;
         }
-
-        return obj;
-
     }
 
     /**
