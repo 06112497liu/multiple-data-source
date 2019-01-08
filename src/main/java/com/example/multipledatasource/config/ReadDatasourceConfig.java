@@ -14,7 +14,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.sql.DataSource;
 
 /**
- * 默认的数据源
+ * 读库数据源
  *
  * @author liuweibo
  * @date 2019/1/2

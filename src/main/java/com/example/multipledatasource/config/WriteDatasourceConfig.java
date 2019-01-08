@@ -13,7 +13,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.sql.DataSource;
 
 /**
- * 第二个数据源
+ * 写库数据源
  *
  * @author liuweibo
  * @date 2019/1/2

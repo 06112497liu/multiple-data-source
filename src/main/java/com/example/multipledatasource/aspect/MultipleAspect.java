@@ -15,6 +15,8 @@ import java.util.Stack;
 import java.util.stream.Stream;
 
 /**
+ * 编程式事务切面逻辑
+ *
  * @author liuweibo
  * @date 2019/1/7
  */
@@ -30,6 +32,11 @@ public class MultipleAspect {
     @Around("pointCut(transactional)")
     public Object around(ProceedingJoinPoint joinPoint, MultipleTransactional transactional) throws Throwable {
 
+        /**
+         * 其中为什么要用Stack来保存TransactionManager和TransactionStatus呢？
+         *      那是因为Spring的事务处理是按照LIFO/stack behavior的方式进行的。
+         *      不这样处理，会报错：Cannot deactivate transaction synchronization - not active
+         */
         Stack<DataSourceTransactionManager> managerStack = new Stack<>();
         Stack<TransactionStatus> statusStack = new Stack<>();
         // 开启事务
