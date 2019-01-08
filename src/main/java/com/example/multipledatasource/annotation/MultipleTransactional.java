@@ -21,10 +21,10 @@ import java.lang.annotation.*;
 public @interface MultipleTransactional {
 
     @AliasFor("transactionManager")
-    String[] value() default {DatasourceConstant.DEFAULT_TRANSACTION_MANAGER};
+    String[] value() default {DatasourceConstant.READ_TRANSACTION_MANAGER};
 
     @AliasFor("value")
-    String[] transactionManager() default {DatasourceConstant.DEFAULT_TRANSACTION_MANAGER};
+    String[] transactionManager() default {DatasourceConstant.READ_TRANSACTION_MANAGER};
 
     Propagation propagation() default Propagation.REQUIRED;
 

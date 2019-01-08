@@ -8,41 +8,36 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 
 /**
- * 默认的数据源
+ * 第二个数据源
  *
  * @author liuweibo
  * @date 2019/1/2
  */
 @Configuration
-@MapperScan(basePackages = "com.example.multipledatasource.dao.def", sqlSessionFactoryRef = "defaultSqlSessionFactory")
-public class DefaultDatasourceConfig {
+@MapperScan(basePackages = "com.example.multipledatasource.dao.write", sqlSessionFactoryRef = "writeSqlSessionFactory")
+public class WriteDatasourceConfig {
 
-
-    @Primary
-    @Bean("defaultDatasource")
-    @ConfigurationProperties("spring.datasource.druid.def")
-    public DataSource defaultDatasource() {
+    @Bean("writeDatasource")
+    @ConfigurationProperties("spring.datasource.druid.write")
+    public DataSource writeDatasource() {
         return DruidDataSourceBuilder.create().build();
     }
 
-    @Primary
-    @Bean(name = "defaultTransactionManager")
-    public DataSourceTransactionManager defaultTransactionManager() {
-        return new DataSourceTransactionManager(defaultDatasource());
+    @Bean(name = "writeTransactionManager")
+    public DataSourceTransactionManager writeTransactionManager() {
+        return new DataSourceTransactionManager(writeDatasource());
     }
 
-    @Primary
-    @Bean(name = "defaultSqlSessionFactory")
-    public SqlSessionFactory defaultSqlSessionFactory(@Qualifier("defaultDatasource") DataSource defaultDatasource)
+    @Bean(name = "writeSqlSessionFactory")
+    public SqlSessionFactory writeSqlSessionFactory(@Qualifier("writeDatasource") DataSource writeDatasource)
         throws Exception {
         final SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
-        sessionFactory.setDataSource(defaultDatasource);
+        sessionFactory.setDataSource(writeDatasource);
         return sessionFactory.getObject();
     }
 }

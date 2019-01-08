@@ -1,8 +1,7 @@
 package com.example.multipledatasource.controller;
 
-import com.example.multipledatasource.dao.def.StudentDao;
-import com.example.multipledatasource.dao.second.PersonDao;
-import com.example.multipledatasource.entity.Person;
+import com.example.multipledatasource.dao.read.StudentDao;
+import com.example.multipledatasource.dao.write.PersonDao;
 import com.example.multipledatasource.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

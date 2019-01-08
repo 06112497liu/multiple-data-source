@@ -1,4 +1,4 @@
-package com.example.multipledatasource.dao.def;
+package com.example.multipledatasource.dao.read;
 
 import com.example.multipledatasource.entity.Student;
 

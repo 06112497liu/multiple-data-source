@@ -1,4 +1,4 @@
-package com.example.multipledatasource.dao.second;
+package com.example.multipledatasource.dao.write;
 
 import com.example.multipledatasource.entity.Person;
 

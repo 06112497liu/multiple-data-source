@@ -2,8 +2,8 @@ package com.example.multipledatasource.service;
 
 import com.example.multipledatasource.annotation.MultipleTransactional;
 import com.example.multipledatasource.constant.DatasourceConstant;
-import com.example.multipledatasource.dao.def.StudentDao;
-import com.example.multipledatasource.dao.second.PersonDao;
+import com.example.multipledatasource.dao.read.StudentDao;
+import com.example.multipledatasource.dao.write.PersonDao;
 import com.example.multipledatasource.entity.Person;
 import com.example.multipledatasource.entity.Student;
 import lombok.AccessLevel;
@@ -33,8 +33,8 @@ public class TestService {
      */
     @MultipleTransactional(
         value = {
-            DatasourceConstant.DEFAULT_TRANSACTION_MANAGER,
-            DatasourceConstant.SECOND_TRANSACTION_MANAGER
+            DatasourceConstant.READ_TRANSACTION_MANAGER,
+            DatasourceConstant.WRITE_TRANSACTION_MANAGER
         }
     )
     public void transactionTest(int e) {

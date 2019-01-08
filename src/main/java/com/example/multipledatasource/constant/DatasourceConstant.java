@@ -6,8 +6,8 @@ package com.example.multipledatasource.constant;
  */
 public interface DatasourceConstant {
 
-    String DEFAULT_TRANSACTION_MANAGER = "defaultTransactionManager";
+    String READ_TRANSACTION_MANAGER = "readTransactionManager";
 
-    String SECOND_TRANSACTION_MANAGER = "secondTransactionManager";
+    String WRITE_TRANSACTION_MANAGER = "writeTransactionManager";
 
 }

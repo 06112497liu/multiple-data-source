@@ -8,36 +8,41 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 
 /**
- * 第二个数据源
+ * 默认的数据源
  *
  * @author liuweibo
  * @date 2019/1/2
  */
 @Configuration
-@MapperScan(basePackages = "com.example.multipledatasource.dao.second", sqlSessionFactoryRef = "secondSqlSessionFactory")
-public class SecondDatasourceConfig {
+@MapperScan(basePackages = "com.example.multipledatasource.dao.read", sqlSessionFactoryRef = "readSqlSessionFactory")
+public class ReadDatasourceConfig {
 
-    @Bean("secondDatasource")
-    @ConfigurationProperties("spring.datasource.druid.second")
-    public DataSource secondDatasource() {
+
+    @Primary
+    @Bean("readDatasource")
+    @ConfigurationProperties("spring.datasource.druid.read")
+    public DataSource readDatasource() {
         return DruidDataSourceBuilder.create().build();
     }
 
-    @Bean(name = "secondTransactionManager")
-    public DataSourceTransactionManager secondTransactionManager() {
-        return new DataSourceTransactionManager(secondDatasource());
+    @Primary
+    @Bean(name = "readTransactionManager")
+    public DataSourceTransactionManager readTransactionManager() {
+        return new DataSourceTransactionManager(readDatasource());
     }
 
-    @Bean(name = "secondSqlSessionFactory")
-    public SqlSessionFactory secondSqlSessionFactory(@Qualifier("secondDatasource") DataSource secondDatasource)
+    @Primary
+    @Bean(name = "readSqlSessionFactory")
+    public SqlSessionFactory readSqlSessionFactory(@Qualifier("readDatasource") DataSource readDatasource)
         throws Exception {
         final SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
-        sessionFactory.setDataSource(secondDatasource);
+        sessionFactory.setDataSource(readDatasource);
         return sessionFactory.getObject();
     }
 }

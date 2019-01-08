@@ -3,16 +3,16 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
     druid:
-        def:  #数据源1
-            url: jdbc:mysql://localhost:3306/lwb?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
+        read:  # 读库
+            url: jdbc:mysql://localhost:3306/read?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
             username: root
             password: 123456
             initial-size: 10
             max-active: 100
             min-idle: 10
             max-wait: 60000
-        second:  #数据源2
-            url: jdbc:mysql://localhost:3306/reddata_opinion?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
+        write:  # 写库
+            url: jdbc:mysql://localhost:3306/write?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
             username: root
             password: 123456
             initial-size: 10
