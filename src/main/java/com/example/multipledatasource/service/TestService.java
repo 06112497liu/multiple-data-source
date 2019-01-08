@@ -1,11 +1,10 @@
 package com.example.multipledatasource.service;
 
 import com.example.multipledatasource.annotation.MultipleTransactional;
-import com.example.multipledatasource.constant.DatasourceConstant;
 import com.example.multipledatasource.dao.read.StudentDao;
 import com.example.multipledatasource.dao.write.PersonDao;
 import com.example.multipledatasource.entity.Person;
-import com.example.multipledatasource.entity.Student;
+import com.example.multipledatasource.enums.MultipleDatasourceTransactionEnum;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +32,13 @@ public class TestService {
      */
     @MultipleTransactional(
         value = {
-            DatasourceConstant.READ_TRANSACTION_MANAGER,
-            DatasourceConstant.WRITE_TRANSACTION_MANAGER
+            MultipleDatasourceTransactionEnum.READ,
+            MultipleDatasourceTransactionEnum.WRITE
         }
     )
     public void transactionTest(int e) {
-        this.studentDao.add(new Student("戴尔"));
+//        this.studentDao.add(new Student("戴尔"));
+        System.out.println(this.studentDao.get());
         if (e == 2) {
             throw new RuntimeException("回滚戴尔");
         }

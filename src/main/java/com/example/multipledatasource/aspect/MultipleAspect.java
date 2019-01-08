@@ -12,6 +12,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.Stack;
+import java.util.stream.Stream;
 
 /**
  * @author liuweibo
@@ -27,7 +28,7 @@ public class MultipleAspect {
     }
 
     @Around("pointCut(transactional)")
-    public Object arround(ProceedingJoinPoint joinPoint, MultipleTransactional transactional) throws Throwable {
+    public Object around(ProceedingJoinPoint joinPoint, MultipleTransactional transactional) throws Throwable {
 
         Stack<DataSourceTransactionManager> managerStack = new Stack<>();
         Stack<TransactionStatus> statusStack = new Stack<>();
@@ -53,13 +54,22 @@ public class MultipleAspect {
     private void openTransaction(MultipleTransactional transactional,
                                  Stack<DataSourceTransactionManager> managerStack,
                                  Stack<TransactionStatus> statusStack) {
-        String[] managerBeanNames = transactional.value();
-        for (String managerBeanName : managerBeanNames) {
-            DataSourceTransactionManager manager = SpringUtil.getBean(managerBeanName, DataSourceTransactionManager.class);
-            TransactionStatus status = manager.getTransaction(new DefaultTransactionDefinition());
-            managerStack.push(manager);
-            statusStack.push(status);
-        }
+        Stream.of(transactional.value())
+            .forEach(transactionManager -> {
+                String transactionManagerBeanName = transactionManager.getTransactionManager();
+                Boolean readOnly = transactionManager.getReadOnly();
+                // 根据配置获取事务管理器
+                DataSourceTransactionManager manager = SpringUtil.getBean(
+                    transactionManagerBeanName, DataSourceTransactionManager.class
+                );
+                DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
+                // 根据配置信息设置是否是只读事务
+                definition.setReadOnly(readOnly);
+                TransactionStatus status = manager.getTransaction(definition);
+                managerStack.push(manager);
+                statusStack.push(status);
+            });
+
     }
 
     /**

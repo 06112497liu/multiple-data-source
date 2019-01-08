@@ -1,6 +1,6 @@
 package com.example.multipledatasource.annotation;
 
-import com.example.multipledatasource.constant.DatasourceConstant;
+import com.example.multipledatasource.enums.MultipleDatasourceTransactionEnum;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Isolation;
@@ -21,18 +21,16 @@ import java.lang.annotation.*;
 public @interface MultipleTransactional {
 
     @AliasFor("transactionManager")
-    String[] value() default {DatasourceConstant.READ_TRANSACTION_MANAGER};
+    MultipleDatasourceTransactionEnum[] value() default {MultipleDatasourceTransactionEnum.READ};
 
     @AliasFor("value")
-    String[] transactionManager() default {DatasourceConstant.READ_TRANSACTION_MANAGER};
+    MultipleDatasourceTransactionEnum[] transactionManager() default {MultipleDatasourceTransactionEnum.READ};
 
     Propagation propagation() default Propagation.REQUIRED;
 
     Isolation isolation() default Isolation.DEFAULT;
 
     int timeout() default TransactionDefinition.TIMEOUT_DEFAULT;
-
-    boolean readOnly() default false;
 
     Class<? extends Throwable>[] rollbackFor() default {};
 
